@@ -1,0 +1,57 @@
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/main_theme"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <ImageButton
+
+        android:id="@+id/btnMenuBar"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/menu_icon"
+        android:contentDescription="Menu"
+        android:scaleType="fitCenter"
+        android:background="@null"
+        />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:fontFamily="monospace"
+            android:text="Event Manager App"
+            android:textAlignment="center"
+            android:textColor="@color/txt_color"/>
+    </androidx.appcompat.widget.Toolbar>
+        
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/sidebar_menu"
+        style="@style/NavigationViewStyle"
+        />
+
+</androidx.drawerlayout.widget.DrawerLayout>

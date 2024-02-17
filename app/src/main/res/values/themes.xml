@@ -1,0 +1,20 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.EventManager" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/main_theme</item>
+        <item name="colorSecondary">@color/second_theme</item>
+
+    </style>
+
+    <style name="Theme.EventManager" parent="Base.Theme.EventManager" />
+
+
+    <style name="NavigationViewStyle">
+        <item name="android:background">@color/second_theme</item>
+        <item name="itemTextColor">@color/txt_color</item>
+        <item name="itemBackground">@color/nav_selected_color</item>
+    </style>
+
+
+</resources>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/fragment_home.xml -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Image Banner -->
+    <ImageView
+        android:id="@+id/imageBanner"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/banner_image"/>
+
+    <!-- Welcome Message -->
+    <TextView
+        android:id="@+id/welcomeMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageBanner"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="16dp"
+        android:text="Welcome to Event Manager App!"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        />
+
+    <!-- Upcoming Events Section -->
+    <TextView
+        android:id="@+id/upcomingEventsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upcoming Events"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_below="@id/welcomeMessage"
+        android:layout_marginTop="16dp"/>
+
+    <!-- ListView for Upcoming Events -->
+    <ListView
+        android:id="@+id/recyclerViewUpcomingEvents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/upcomingEventsTitle"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Featured Events Section -->
+    <TextView
+        android:id="@+id/featuredEventsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Featured Events"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_below="@id/recyclerViewUpcomingEvents"
+        android:layout_marginTop="16dp"/>
+
+    <!-- ListView for Featured Events -->
+    <ListView
+        android:id="@+id/recyclerViewFeaturedEvents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/featuredEventsTitle"
+        android:layout_marginTop="8dp"/>
+
+</RelativeLayout>

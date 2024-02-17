@@ -1,0 +1,83 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Event Name (AutoCompleteTextView) -->
+    <EditText
+        android:id="@+id/txtEventName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Event Name"
+        android:inputType="textCapWords"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Additional AutoCompleteTextView -->
+    <AutoCompleteTextView
+        android:id="@+id/actvEvent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Event"
+        android:inputType="textCapWords"
+        android:layout_below="@id/txtEventName"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Event Date and Time -->
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date and Time"
+        android:textSize="18sp"
+        android:layout_below="@id/actvEvent"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/btnPickDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick Date"
+        android:layout_below="@id/tvDate"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnPickTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick Time"
+        android:layout_toEndOf="@id/btnPickDate"
+        android:layout_marginStart="16dp"
+        android:layout_below="@id/tvDate"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Event Location -->
+    <EditText
+        android:id="@+id/txtLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Event Location"
+        android:layout_below="@id/btnPickDate"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Event Description -->
+    <EditText
+        android:id="@+id/txtDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Event Description"
+        android:inputType="textMultiLine"
+        android:layout_below="@id/txtLocation"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/btnSubmitEvent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit Event"
+        android:layout_below="@id/txtDescription"
+        android:layout_marginTop="32dp"/>
+
+</RelativeLayout>
+
