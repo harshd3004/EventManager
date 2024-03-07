@@ -6,6 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
@@ -96,6 +100,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public Cursor getAllEventsCursor() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery(SELECT_ALL_EVENTS, null);
+    }
+
+    public Cursor getAllUpcomingEventsCursor() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Get today's date
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date currentDate = new Date();
+        String formattedDate = dateFormat.format(currentDate);
+
+        // Query to get upcoming events greater than 10 days from today
+        String query = "SELECT " +
+                KEY_ID + " AS _id, " +
+                KEY_EVENT_NAME + ", " +
+                KEY_EVENT + ", " +
+                KEY_DATE + " " +
+                "FROM " + TABLE_EVENTS +
+                " WHERE date(" + KEY_DATE + ") > date('" + formattedDate + "', '+10 days')";
+
+
+        return db.rawQuery(query, null);
     }
 
 

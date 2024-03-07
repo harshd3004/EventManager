@@ -22,5 +22,6 @@
             android:id="@+id/nav_organize"
             android:title="Organise an event"/>
 
+
     </group>
 </menu>

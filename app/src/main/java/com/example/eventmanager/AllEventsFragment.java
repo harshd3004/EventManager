@@ -34,19 +34,9 @@ public class AllEventsFragment extends Fragment {
         // Fetch data from the database
         cursor = databaseHandler.getAllEventsCursor();
 
-        // columns to display in the ListView
-        String[] columns = {"_id",databaseHandler.getEventNameKey(), databaseHandler.getEventKey(), databaseHandler.getDateKey()};
-
-        //views to bind the data
-        int[] toViews = {R.id.eveId,R.id.txtEventNameLi, R.id.txtEventLi, R.id.txtDateLi};
-
-        // SimpleCursorAdapter to populate the ListView
-        CursorAdapter cursorAdapter = new SimpleCursorAdapter(
+        EventCursorAdapter cursorAdapter = new EventCursorAdapter(
                 requireContext(),
-                R.layout.list_item_event,
                 cursor,
-                columns,
-                toViews,
                 0
         );
 
