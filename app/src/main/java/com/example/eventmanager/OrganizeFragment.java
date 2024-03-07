@@ -1,15 +1,24 @@
 package com.example.eventmanager;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class OrganizeFragment extends Fragment {
 
@@ -17,8 +26,8 @@ public class OrganizeFragment extends Fragment {
     private AutoCompleteTextView txtEvent;
     private EditText txtLocation;
     private EditText txtDescription;
-    private Button btnSubmit;
-
+    private Button btnSubmit,btnPickDate,btnPickTime;
+    private Calendar selectedDateAndTime;
     private DatabaseHandler databaseHandler;
 
 
@@ -37,26 +46,110 @@ public class OrganizeFragment extends Fragment {
         txtLocation = view.findViewById(R.id.txtLocation);
         txtDescription = view.findViewById(R.id.txtDescription);
         btnSubmit = view.findViewById(R.id.btnSubmitEvent);
+        btnPickDate = view.findViewById(R.id.btnPickDate);
+        btnPickTime = view.findViewById(R.id.btnPickTime);
 
         databaseHandler = new DatabaseHandler(requireContext());
 
-        btnSubmit.setOnClickListener(v -> {
-            // Get data from UI
-            String eventName = txtEventName.getText().toString();
-            String additionalInfo = txtEvent.getText().toString();
-            String location = txtLocation.getText().toString();
-            String description = txtDescription.getText().toString();
-            //  date and time handling to be added here
+        selectedDateAndTime = Calendar.getInstance();
 
-            // Create an EventData object
-            EventData eventData = new EventData(eventName, additionalInfo, "", location, description);
-
-            // Add the event to the database
-            databaseHandler.addEvent(eventData);
-
-            Toast.makeText(requireContext(), "Event added successfully!", Toast.LENGTH_LONG).show();
+        btnPickDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
+            }
         });
+
+        btnPickTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePickerDialog();
+            }
+        });
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get data from UI
+                String eventName = txtEventName.getText().toString();
+                String additionalInfo = txtEvent.getText().toString();
+                String location = txtLocation.getText().toString();
+                String description = txtDescription.getText().toString();
+
+                // Format date and time
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                String formattedDateAndTime = dateFormat.format(selectedDateAndTime.getTime());
+
+                // Create an EventData object
+                EventData eventData = new EventData(eventName, additionalInfo, formattedDateAndTime, location, description);
+
+                // Add the event to the database
+                databaseHandler.addEvent(eventData);
+                clearInputs();
+                Toast.makeText(requireContext(), "Event added successfully!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void showDatePickerDialog() {
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                selectedDateAndTime.set(Calendar.YEAR, year);
+                selectedDateAndTime.set(Calendar.MONTH, monthOfYear);
+                selectedDateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateDateTimeButtons();
+            }
+        };
+
+        new DatePickerDialog(
+                requireContext(),
+                dateSetListener,
+                selectedDateAndTime.get(Calendar.YEAR),
+                selectedDateAndTime.get(Calendar.MONTH),
+                selectedDateAndTime.get(Calendar.DAY_OF_MONTH)
+        ).show();
+    }
+
+    private void showTimePickerDialog() {
+        TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                selectedDateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                selectedDateAndTime.set(Calendar.MINUTE, minute);
+                updateDateTimeButtons();
+            }
+        };
+
+        new TimePickerDialog(
+                requireContext(),
+                timeSetListener,
+                selectedDateAndTime.get(Calendar.HOUR_OF_DAY),
+                selectedDateAndTime.get(Calendar.MINUTE),
+                DateFormat.is24HourFormat(requireContext())
+        ).show();
+    }
+
+    private void updateDateTimeButtons() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault());
+        String formattedDate = dateFormat.format(selectedDateAndTime.getTime());
+        btnPickDate.setText(formattedDate);
+
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
+        String formattedTime = timeFormat.format(selectedDateAndTime.getTime());
+        btnPickTime.setText(formattedTime);
+    }
+
+    private void clearInputs(){
+        txtEventName.setText("");
+        txtEvent.setText("");
+        txtLocation.setText("");
+        txtDescription.setText("");
+        btnPickDate.setText("Pick Date");
+        btnPickTime.setText("Pick Time");
     }
 }

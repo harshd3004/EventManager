@@ -23,7 +23,6 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
     <ImageButton
-
         android:id="@+id/btnMenuBar"
         android:layout_width="30dp"
         android:layout_height="match_parent"

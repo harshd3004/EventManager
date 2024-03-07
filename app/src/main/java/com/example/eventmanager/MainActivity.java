@@ -71,9 +71,6 @@ public class MainActivity extends AppCompatActivity {
         }else if(itemId == R.id.nav_organize){
             loadFragment(new OrganizeFragment());
             navigationView.setCheckedItem(R.id.nav_organize);
-        } else if (itemId == R.id.nav_profile) {
-            loadFragment(new MyProfileFragment());
-            navigationView.setCheckedItem(R.id.nav_profile);
         }
         drawerLayout.closeDrawer(GravityCompat.START);
     }

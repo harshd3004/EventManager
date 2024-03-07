@@ -27,6 +27,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             KEY_DATE + " " +
             "FROM " + TABLE_EVENTS;
 
+    private static final String SELECT_EVENT_BY_ID = "SELECT * FROM " + TABLE_EVENTS +
+            " WHERE " + KEY_ID + " = ?";
+
+
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -63,7 +67,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    // Method to get event details by eventId
+    public EventData getEventDetails(int eventId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        EventData eventData = null;
 
+        String[] selectionArgs = {String.valueOf(eventId)};
+
+        Cursor cursor = db.rawQuery(SELECT_EVENT_BY_ID, selectionArgs);
+
+        if (cursor.moveToFirst()) {
+            String eventName = cursor.getString(1);
+            String event = cursor.getString(2);
+            String date = cursor.getString(3);
+            String location = cursor.getString(4);
+            String description = cursor.getString(5);
+
+            eventData = new EventData(eventName, event, date, location, description);
+
+            cursor.close();
+        }
+
+        return eventData;
+    }
 
 
     // Fetch all events cursor
@@ -85,7 +111,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public String getDateKey() {
         return KEY_DATE;
     }
-
+    public String getIdKey(){return KEY_ID;}
 
 }
 

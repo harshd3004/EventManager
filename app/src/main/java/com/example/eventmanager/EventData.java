@@ -41,5 +41,10 @@ public class EventData {
         return eventDescription;
     }
 
+    public String getDate() { return  eventDate;    }
+
+    public String getLocation() { return eventLocation;    }
+
+    public String getDescription() {  return eventDescription;    }
 }
 

@@ -1,13 +1,17 @@
 package com.example.eventmanager;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -15,10 +19,9 @@ public class AllEventsFragment extends Fragment {
 
     private ListView listViewEvents;
     private DatabaseHandler databaseHandler;
+    Cursor cursor;
 
-    public AllEventsFragment() {
-        // Required empty public constructor
-    }
+    public AllEventsFragment() {    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,13 +32,13 @@ public class AllEventsFragment extends Fragment {
         databaseHandler = new DatabaseHandler(requireContext());
 
         // Fetch data from the database
-        Cursor cursor = databaseHandler.getAllEventsCursor();
+        cursor = databaseHandler.getAllEventsCursor();
 
         // columns to display in the ListView
-        String[] columns = {databaseHandler.getEventNameKey(), databaseHandler.getEventKey(), databaseHandler.getDateKey()};
+        String[] columns = {"_id",databaseHandler.getEventNameKey(), databaseHandler.getEventKey(), databaseHandler.getDateKey()};
 
         //views to bind the data
-        int[] toViews = {R.id.txtEventNameLi, R.id.txtEventLi, R.id.txtDateLi};
+        int[] toViews = {R.id.eveId,R.id.txtEventNameLi, R.id.txtEventLi, R.id.txtDateLi};
 
         // SimpleCursorAdapter to populate the ListView
         CursorAdapter cursorAdapter = new SimpleCursorAdapter(
@@ -50,6 +53,30 @@ public class AllEventsFragment extends Fragment {
         // Set adapter for the ListView
         listViewEvents.setAdapter(cursorAdapter);
 
+        // Set item click listener
+        listViewEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the event ID from the invisible TextView
+                TextView eveIdTextView = view.findViewById(R.id.eveId);
+                int eventId = Integer.parseInt(eveIdTextView.getText().toString());
+
+                // Create an intent to open EventRegisterActivity
+                Intent intent = new Intent(requireContext(), EventRegisterActivity.class);
+                intent.putExtra("eventId", eventId);
+
+                Toast.makeText(getActivity().getApplicationContext(), "Starting intent", Toast.LENGTH_LONG).show();
+                // Start the activity
+                startActivity(intent);
+            }
+        });
+
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
     }
 }
