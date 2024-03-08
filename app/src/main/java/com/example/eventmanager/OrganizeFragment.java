@@ -24,8 +24,7 @@ public class OrganizeFragment extends Fragment {
 
     private EditText txtEventName;
     private AutoCompleteTextView txtEvent;
-    private EditText txtLocation;
-    private EditText txtDescription;
+    private EditText txtLocation, txtDescription, txtGroupLink;
     private Button btnSubmit,btnPickDate,btnPickTime;
     private Calendar selectedDateAndTime;
     private DatabaseHandler databaseHandler;
@@ -45,6 +44,7 @@ public class OrganizeFragment extends Fragment {
         txtEvent = view.findViewById(R.id.actvEvent);
         txtLocation = view.findViewById(R.id.txtLocation);
         txtDescription = view.findViewById(R.id.txtDescription);
+        txtGroupLink = view.findViewById(R.id.txtWhatsAppLink);
         btnSubmit = view.findViewById(R.id.btnSubmitEvent);
         btnPickDate = view.findViewById(R.id.btnPickDate);
         btnPickTime = view.findViewById(R.id.btnPickTime);
@@ -75,13 +75,13 @@ public class OrganizeFragment extends Fragment {
                 String additionalInfo = txtEvent.getText().toString();
                 String location = txtLocation.getText().toString();
                 String description = txtDescription.getText().toString();
-
+                String groupLink = txtGroupLink.getText().toString();
                 // Format date and time
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                 String formattedDateAndTime = dateFormat.format(selectedDateAndTime.getTime());
 
                 // Create an EventData object
-                EventData eventData = new EventData(eventName, additionalInfo, formattedDateAndTime, location, description);
+                EventData eventData = new EventData(eventName, additionalInfo, formattedDateAndTime, location, description,groupLink,null);
 
                 // Add the event to the database
                 databaseHandler.addEvent(eventData);

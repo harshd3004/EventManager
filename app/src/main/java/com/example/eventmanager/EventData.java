@@ -8,17 +8,21 @@ public class EventData {
     private String eventDate;
     private String eventLocation;
     private String eventDescription;
+    private String groupLink;
+    private String participants;
 
     public EventData() {
         // Default constructor
     }
 
-    public EventData(String eventName, String event, String eventDate, String eventLocation, String eventDescription) {
+    public EventData(String eventName, String event, String eventDate, String eventLocation, String eventDescription, String groupLink, String participants) {
         this.eventName = eventName;
         this.event = event;
         this.eventDate = eventDate;
         this.eventLocation = eventLocation;
         this.eventDescription = eventDescription;
+        this.groupLink = groupLink;
+        this.participants = participants;
     }
 
     // Getters
@@ -46,5 +50,13 @@ public class EventData {
     public String getLocation() { return eventLocation;    }
 
     public String getDescription() {  return eventDescription;    }
+
+    public String getGroupLink() {
+        return groupLink;
+    }
+
+    public String getParticipants() {
+        return participants;
+    }
 }
 

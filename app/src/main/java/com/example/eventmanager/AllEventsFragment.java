@@ -31,6 +31,7 @@ public class AllEventsFragment extends Fragment {
         listViewEvents = view.findViewById(R.id.listViewEvents);
         databaseHandler = new DatabaseHandler(requireContext());
 
+        databaseHandler.deleteExpiredEvents();
         // Fetch data from the database
         cursor = databaseHandler.getAllEventsCursor();
 

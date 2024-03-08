@@ -70,14 +70,25 @@
         android:layout_below="@id/txtLocation"
         android:layout_marginTop="16dp"/>
 
+    <!-- WhatsApp Group Link -->
+    <EditText
+        android:id="@+id/txtWhatsAppLink"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="WhatsApp Group Link"
+        android:inputType="text"
+        android:layout_below="@id/txtDescription"
+        android:layout_marginTop="16dp"/>
+
     <!-- Submit Button -->
     <Button
         android:id="@+id/btnSubmitEvent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit Event"
-        android:layout_below="@id/txtDescription"
+        android:layout_below="@id/txtWhatsAppLink"
         android:layout_marginTop="32dp"/>
+
 
 </RelativeLayout>
 
