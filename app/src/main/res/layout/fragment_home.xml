@@ -40,7 +40,7 @@
 
     <!-- ListView for Upcoming Events -->
     <ListView
-        android:id="@+id/recyclerViewUpcomingEvents"
+        android:id="@+id/liUpcomingEvents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/upcomingEventsTitle"
@@ -54,12 +54,12 @@
         android:text="Featured Events"
         android:textSize="20sp"
         android:textColor="@color/black"
-        android:layout_below="@id/recyclerViewUpcomingEvents"
+        android:layout_below="@id/liUpcomingEvents"
         android:layout_marginTop="16dp"/>
 
     <!-- ListView for Featured Events -->
     <ListView
-        android:id="@+id/recyclerViewFeaturedEvents"
+        android:id="@+id/liFeaturedEvents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/featuredEventsTitle"

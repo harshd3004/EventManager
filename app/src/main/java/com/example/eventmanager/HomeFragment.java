@@ -8,9 +8,9 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 public class HomeFragment extends Fragment {
 
-    private ListView upcomingEventsListView;
+    private ListView upcomingEventsListView,featuredEventsListView;
     private DatabaseHandler databaseHandler;
-    private EventCursorAdapter cursorAdapter;
+    private EventCursorAdapter cursorAdapter,featuredAdapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -21,8 +21,10 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        upcomingEventsListView = view.findViewById(R.id.recyclerViewUpcomingEvents);
+        upcomingEventsListView = view.findViewById(R.id.liUpcomingEvents);
+        featuredEventsListView = view.findViewById(R.id.liFeaturedEvents);
         databaseHandler = new DatabaseHandler(requireContext());
+        databaseHandler.deleteExpiredEvents();
 
         // Fetch upcoming events from the database
         Cursor cursor = databaseHandler.getAllUpcomingEventsCursor();
@@ -37,10 +39,21 @@ public class HomeFragment extends Fragment {
         // Set adapter for the ListView
         upcomingEventsListView.setAdapter(cursorAdapter);
 
-        // Add any other necessary UI updates or actions related to upcoming events
+        Cursor featuredEventsCursor = databaseHandler.getFeaturedEventsCursor();
+
+        // Set up the adapter for the featured events ListView using EventCursorAdapter
+        featuredAdapter = new EventCursorAdapter(
+                requireContext(),
+                featuredEventsCursor,
+                0
+        );
+
+        // Set adapter for the featured events ListView
+        featuredEventsListView.setAdapter(featuredAdapter);
 
         return view;
     }
+
 
     @Override
     public void onPause() {
@@ -48,6 +61,9 @@ public class HomeFragment extends Fragment {
         // Close the cursor when the fragment is paused
         if (cursorAdapter != null) {
             cursorAdapter.changeCursor(null);
+        }
+        if(featuredAdapter != null){
+            featuredAdapter.changeCursor(null);
         }
     }
 }

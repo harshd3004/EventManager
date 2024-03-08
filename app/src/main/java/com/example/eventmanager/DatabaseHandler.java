@@ -11,7 +11,7 @@ import java.util.Locale;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "EventManagerDB";
 
     //Event Table
@@ -166,6 +166,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 KEY_PARTICIPANTS +
                 " FROM " + TABLE_EVENTS +
                 " WHERE date(" + KEY_DATE + ") > date('" + formattedDate + "', '+10 days')";
+
+        return db.rawQuery(query, null);
+    }
+
+    public Cursor getFeaturedEventsCursor() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Query to get the first three events as featured events
+        String query = "SELECT " +
+                KEY_ID + " AS _id, " +
+                KEY_EVENT_NAME + ", " +
+                KEY_EVENT + ", " +
+                KEY_DATE + ", " +
+                KEY_LOCATION + ", " +
+                KEY_DESCRIPTION + ", " +
+                KEY_GROUP_LINK + ", " +
+                KEY_PARTICIPANTS +
+                " FROM " + TABLE_EVENTS +
+                " ORDER BY " + KEY_DATE + " ASC" +
+                " LIMIT 3";
 
         return db.rawQuery(query, null);
     }
