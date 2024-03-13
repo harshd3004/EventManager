@@ -11,7 +11,7 @@ import java.util.Locale;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "EventManagerDB";
 
     //Event Table
@@ -23,16 +23,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_LOCATION = "event_location";
     private static final String KEY_DESCRIPTION = "event_description";
     private static final String KEY_GROUP_LINK = "grouplink";
-    private static final String KEY_PARTICIPANTS = "participants";
+    private static final String KEY_FORM_LINK = "formlink";
 
-    // Students Table
-    private static final String TABLE_STUDENTS = "students";
-    private static final String KEY_USER_ID = "userid";
-    private static final String KEY_PASSWORD = "password";
-    private static final String KEY_NAME = "name";
-    private static final String KEY_CONTACT = "contact";
-    private static final String KEY_COLLEGE = "college";
-    private static final String KEY_COURSE = "course";
 
     // SQL query with _id as an alias for the primary key column
     private static final String SELECT_ALL_EVENTS = "SELECT " +
@@ -43,25 +35,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             KEY_LOCATION + ", " +
             KEY_DESCRIPTION + ", " +
             KEY_GROUP_LINK + ", " +
-            KEY_PARTICIPANTS +
+            KEY_FORM_LINK +
             " FROM " + TABLE_EVENTS;
 
     // SQL query with _id as an alias for the primary key column for the students table
-    private static final String SELECT_ALL_STUDENTS = "SELECT " +
-            KEY_ID + " AS _id, " +
-            KEY_USER_ID + ", " +
-            KEY_PASSWORD + ", " +
-            KEY_NAME + ", " +
-            KEY_CONTACT + ", " +
-            KEY_COLLEGE + ", " +
-            KEY_COURSE +
-            " FROM " + TABLE_STUDENTS;
 
     private static final String SELECT_EVENT_BY_ID = "SELECT * FROM " + TABLE_EVENTS +
             " WHERE " + KEY_ID + " = ?";
 
-    private static final String SELECT_STUDENT_BY_ID = "SELECT * FROM " + TABLE_STUDENTS +
-            " WHERE " + KEY_ID + " = ?";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -77,24 +58,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_LOCATION + " TEXT,"
                 + KEY_DESCRIPTION + " TEXT,"
                 + KEY_GROUP_LINK + " TEXT,"
-                + KEY_PARTICIPANTS + " TEXT" + ")";
+                + KEY_FORM_LINK + " TEXT" + ")";
         db.execSQL(CREATE_EVENTS_TABLE);
 
-        String CREATE_STUDENTS_TABLE = "CREATE TABLE " + TABLE_STUDENTS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + KEY_USER_ID + " TEXT,"
-                + KEY_PASSWORD + " TEXT,"
-                + KEY_NAME + " TEXT,"
-                + KEY_CONTACT + " TEXT,"
-                + KEY_COLLEGE + " TEXT,"
-                + KEY_COURSE + " TEXT" + ")";
-        db.execSQL(CREATE_STUDENTS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STUDENTS);
         onCreate(db);
     }
 
@@ -108,7 +79,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_LOCATION, event.getEventLocation());
         values.put(KEY_DESCRIPTION, event.getEventDescription());
         values.put(KEY_GROUP_LINK, event.getGroupLink());
-        values.put(KEY_PARTICIPANTS, event.getParticipants());
+        values.put(KEY_FORM_LINK, event.getFormLink());
 
         db.insert(TABLE_EVENTS, null, values);
         db.close();
@@ -163,7 +134,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 KEY_LOCATION + ", " +
                 KEY_DESCRIPTION + ", " +
                 KEY_GROUP_LINK + ", " +
-                KEY_PARTICIPANTS +
+                KEY_FORM_LINK +
                 " FROM " + TABLE_EVENTS +
                 " WHERE date(" + KEY_DATE + ") > date('" + formattedDate + "', '+10 days')";
 
@@ -182,7 +153,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 KEY_LOCATION + ", " +
                 KEY_DESCRIPTION + ", " +
                 KEY_GROUP_LINK + ", " +
-                KEY_PARTICIPANTS +
+                KEY_FORM_LINK +
                 " FROM " + TABLE_EVENTS +
                 " ORDER BY " + KEY_DATE + " ASC" +
                 " LIMIT 3";
@@ -226,7 +197,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public String getParticipantsKey() {
-        return KEY_PARTICIPANTS;
+        return KEY_FORM_LINK;
     }
 }
 

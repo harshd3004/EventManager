@@ -65,10 +65,12 @@ public class MainActivity extends AppCompatActivity {
         } else if (itemId == R.id.nav_allevents) {
             loadFragment(new AllEventsFragment());
             navigationView.setCheckedItem(R.id.nav_allevents);
-        } else if (itemId == R.id.nav_myevents) {
-            loadFragment(new MyEventsFragment());
-            navigationView.setCheckedItem(R.id.nav_myevents);
-        }else if(itemId == R.id.nav_organize){
+        }
+//        else if (itemId == R.id.nav_myevents) {
+//            loadFragment(new MyEventsFragment());
+//            navigationView.setCheckedItem(R.id.nav_myevents);
+//        }
+        else if(itemId == R.id.nav_organize){
             loadFragment(new OrganizeFragment());
             navigationView.setCheckedItem(R.id.nav_organize);
         }

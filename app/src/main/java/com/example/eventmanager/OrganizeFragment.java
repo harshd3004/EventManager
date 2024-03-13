@@ -24,7 +24,7 @@ public class OrganizeFragment extends Fragment {
 
     private EditText txtEventName;
     private AutoCompleteTextView txtEvent;
-    private EditText txtLocation, txtDescription, txtGroupLink;
+    private EditText txtLocation, txtDescription, txtGroupLink, txtFormLink;
     private Button btnSubmit,btnPickDate,btnPickTime;
     private Calendar selectedDateAndTime;
     private DatabaseHandler databaseHandler;
@@ -45,6 +45,7 @@ public class OrganizeFragment extends Fragment {
         txtLocation = view.findViewById(R.id.txtLocation);
         txtDescription = view.findViewById(R.id.txtDescription);
         txtGroupLink = view.findViewById(R.id.txtWhatsAppLink);
+        txtFormLink = view.findViewById(R.id.txtFormLink);
         btnSubmit = view.findViewById(R.id.btnSubmitEvent);
         btnPickDate = view.findViewById(R.id.btnPickDate);
         btnPickTime = view.findViewById(R.id.btnPickTime);
@@ -76,12 +77,13 @@ public class OrganizeFragment extends Fragment {
                 String location = txtLocation.getText().toString();
                 String description = txtDescription.getText().toString();
                 String groupLink = txtGroupLink.getText().toString();
+                String formLink = txtFormLink.getText().toString();
                 // Format date and time
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                 String formattedDateAndTime = dateFormat.format(selectedDateAndTime.getTime());
 
                 // Create an EventData object
-                EventData eventData = new EventData(eventName, additionalInfo, formattedDateAndTime, location, description,groupLink,null);
+                EventData eventData = new EventData(eventName, additionalInfo, formattedDateAndTime, location, description,groupLink,formLink);
 
                 // Add the event to the database
                 databaseHandler.addEvent(eventData);
@@ -149,6 +151,7 @@ public class OrganizeFragment extends Fragment {
         txtEvent.setText("");
         txtLocation.setText("");
         txtDescription.setText("");
+        txtGroupLink.setText("");
         btnPickDate.setText("Pick Date");
         btnPickTime.setText("Pick Time");
     }

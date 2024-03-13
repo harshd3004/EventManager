@@ -56,7 +56,6 @@ public class AllEventsFragment extends Fragment {
                 Intent intent = new Intent(requireContext(), EventRegisterActivity.class);
                 intent.putExtra("eventId", eventId);
 
-                Toast.makeText(getActivity().getApplicationContext(), "Starting intent", Toast.LENGTH_LONG).show();
                 // Start the activity
                 startActivity(intent);
             }

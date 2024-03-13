@@ -12,10 +12,10 @@
             android:title="Ongoing Events"
             android:icon="@drawable/event_ic"/>
 
-        <item
-            android:id="@+id/nav_myevents"
-            android:title="My Registered Events"
-            android:icon="@drawable/myevent_ico"/>
+<!--        <item-->
+<!--            android:id="@+id/nav_myevents"-->
+<!--            android:title="My Registered Events"-->
+<!--            android:icon="@drawable/myevent_ico"/>-->
 
         <item
             android:icon="@drawable/organize_ic"

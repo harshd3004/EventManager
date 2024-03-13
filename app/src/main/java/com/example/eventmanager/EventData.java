@@ -9,20 +9,20 @@ public class EventData {
     private String eventLocation;
     private String eventDescription;
     private String groupLink;
-    private String participants;
+    private String formLink;
 
     public EventData() {
         // Default constructor
     }
 
-    public EventData(String eventName, String event, String eventDate, String eventLocation, String eventDescription, String groupLink, String participants) {
+    public EventData(String eventName, String event, String eventDate, String eventLocation, String eventDescription, String groupLink, String formLink) {
         this.eventName = eventName;
         this.event = event;
         this.eventDate = eventDate;
         this.eventLocation = eventLocation;
         this.eventDescription = eventDescription;
         this.groupLink = groupLink;
-        this.participants = participants;
+        this.formLink = formLink;
     }
 
     // Getters
@@ -55,8 +55,8 @@ public class EventData {
         return groupLink;
     }
 
-    public String getParticipants() {
-        return participants;
+    public String getFormLink() {
+        return formLink;
     }
 }
 
