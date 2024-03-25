@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- res/layout/fragment_home.xml -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
+
 
     <!-- Image Banner -->
     <ImageView
@@ -46,23 +46,22 @@
         android:layout_below="@id/upcomingEventsTitle"
         android:layout_marginTop="8dp"/>
 
-    <!-- Featured Events Section -->
-    <TextView
-        android:id="@+id/featuredEventsTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Featured Events"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:layout_below="@id/liUpcomingEvents"
-        android:layout_marginTop="16dp"/>
+<!--    &lt;!&ndash; Featured Events Section &ndash;&gt;-->
+<!--    <TextView-->
+<!--        android:id="@+id/featuredEventsTitle"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Featured Events"-->
+<!--        android:textSize="20sp"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:layout_below="@id/liUpcomingEvents"-->
+<!--        android:layout_marginTop="16dp"/>-->
 
-    <!-- ListView for Featured Events -->
-    <ListView
-        android:id="@+id/liFeaturedEvents"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/featuredEventsTitle"
-        android:layout_marginTop="8dp"/>
-
+<!--    &lt;!&ndash; ListView for Featured Events &ndash;&gt;-->
+<!--    <ListView-->
+<!--        android:id="@+id/liFeaturedEvents"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/featuredEventsTitle"-->
+<!--        android:layout_marginTop="8dp"/>-->
 </RelativeLayout>

@@ -80,14 +80,6 @@
         android:layout_below="@id/txtDescription"
         android:layout_marginTop="16dp"/>
 
-    <EditText
-        android:id="@+id/txtFormLink"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Form Link"
-        android:inputType="text"
-        android:layout_below="@id/txtWhatsAppLink"
-        android:layout_marginTop="16dp"/>
 
     <!-- Submit Button -->
     <Button
@@ -95,7 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit Event"
-        android:layout_below="@id/txtFormLink"
+        android:layout_below="@id/txtWhatsAppLink"
         android:layout_marginTop="32dp"/>
 
 </RelativeLayout>

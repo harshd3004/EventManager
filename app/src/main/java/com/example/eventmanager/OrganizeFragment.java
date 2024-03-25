@@ -1,6 +1,7 @@
 package com.example.eventmanager;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -11,6 +12,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -24,7 +26,7 @@ public class OrganizeFragment extends Fragment {
 
     private EditText txtEventName;
     private AutoCompleteTextView txtEvent;
-    private EditText txtLocation, txtDescription, txtGroupLink, txtFormLink;
+    private EditText txtLocation, txtDescription, txtGroupLink;
     private Button btnSubmit,btnPickDate,btnPickTime;
     private Calendar selectedDateAndTime;
     private DatabaseHandler databaseHandler;
@@ -45,7 +47,6 @@ public class OrganizeFragment extends Fragment {
         txtLocation = view.findViewById(R.id.txtLocation);
         txtDescription = view.findViewById(R.id.txtDescription);
         txtGroupLink = view.findViewById(R.id.txtWhatsAppLink);
-        txtFormLink = view.findViewById(R.id.txtFormLink);
         btnSubmit = view.findViewById(R.id.btnSubmitEvent);
         btnPickDate = view.findViewById(R.id.btnPickDate);
         btnPickTime = view.findViewById(R.id.btnPickTime);
@@ -77,16 +78,16 @@ public class OrganizeFragment extends Fragment {
                 String location = txtLocation.getText().toString();
                 String description = txtDescription.getText().toString();
                 String groupLink = txtGroupLink.getText().toString();
-                String formLink = txtFormLink.getText().toString();
                 // Format date and time
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                 String formattedDateAndTime = dateFormat.format(selectedDateAndTime.getTime());
 
                 // Create an EventData object
-                EventData eventData = new EventData(eventName, additionalInfo, formattedDateAndTime, location, description,groupLink,formLink);
+                EventData eventData = new EventData(eventName, additionalInfo, formattedDateAndTime, location, description,groupLink);
 
                 // Add the event to the database
-                databaseHandler.addEvent(eventData);
+                //databaseHandler.addEvent(eventData); //sqllite
+                databaseHandler.addEventFB(eventData);//firebase
                 clearInputs();
                 Toast.makeText(requireContext(), "Event added successfully!", Toast.LENGTH_LONG).show();
             }
@@ -96,6 +97,7 @@ public class OrganizeFragment extends Fragment {
         // Inflate the layout for this fragment
         return view;
     }
+
 
     private void showDatePickerDialog() {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {

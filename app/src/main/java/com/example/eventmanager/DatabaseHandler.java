@@ -1,11 +1,33 @@
 package com.example.eventmanager;
 
+import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Debug;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -25,6 +47,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_GROUP_LINK = "grouplink";
     private static final String KEY_FORM_LINK = "formlink";
 
+    Context context;
 
     // SQL query with _id as an alias for the primary key column
     private static final String SELECT_ALL_EVENTS = "SELECT " +
@@ -43,10 +66,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String SELECT_EVENT_BY_ID = "SELECT * FROM " + TABLE_EVENTS +
             " WHERE " + KEY_ID + " = ?";
 
-
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
+
+
+    //
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -69,53 +95,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addEvent(EventData event) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(KEY_EVENT_NAME, event.getEventName());
-        values.put(KEY_EVENT, event.getEvent());
-        values.put(KEY_DATE, event.getEventDate());
-        values.put(KEY_LOCATION, event.getEventLocation());
-        values.put(KEY_DESCRIPTION, event.getEventDescription());
-        values.put(KEY_GROUP_LINK, event.getGroupLink());
-        values.put(KEY_FORM_LINK, event.getFormLink());
-
-        db.insert(TABLE_EVENTS, null, values);
-        db.close();
-    }
-
-    // Method to get event details by eventId
-    public EventData getEventDetails(int eventId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        EventData eventData = null;
-
-        String[] selectionArgs = {String.valueOf(eventId)};
-
-        Cursor cursor = db.rawQuery(SELECT_EVENT_BY_ID, selectionArgs);
-
-        if (cursor.moveToFirst()) {
-            String eventName = cursor.getString(1);
-            String event = cursor.getString(2);
-            String date = cursor.getString(3);
-            String location = cursor.getString(4);
-            String description = cursor.getString(5);
-            String groupLink = cursor.getString(6);
-            String participants = cursor.getString(7);
-
-            eventData = new EventData(eventName, event, date, location, description, groupLink, participants);
-
-            cursor.close();
-        }
-
-        return eventData;
-    }
 
     // Fetch all events cursor
     public Cursor getAllEventsCursor() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery(SELECT_ALL_EVENTS, null);
     }
+
+    //fetch all events from FB
+
 
     public Cursor getAllUpcomingEventsCursor() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -199,6 +187,110 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public String getParticipantsKey() {
         return KEY_FORM_LINK;
     }
+
+
+    //Below section for Firebase
+    public void addEventFB(EventData event){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference eventsRef = database.getReference("EventsData");
+        String key = eventsRef.push().getKey();
+        event.setFbId(key);
+        eventsRef.child(key).setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.d("Firebase","Inserted event data");
+            }
+        });
+        showEventKeyDialogue(key);
+    }
+
+    private void showEventKeyDialogue(String key) {
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.evekey_dialogue);
+        TextView message =  dialog.findViewById(R.id.msg);
+        message.setText("Importatnt! \n Copy this Event key for further access to your event");
+        EditText etkey = dialog.findViewById(R.id.key);
+        etkey.setText(key);
+        Button btn = dialog.findViewById(R.id.btnAction);
+        btn.setText("Copy");
+        dialog.show();
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("EventKey", key);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(context, "Event ID copied to clipboard", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+            }
+        });
+
+    }
+
+    public void addParticipant(String eveKey,ParticipantData participant){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference participantsRef = database.getReference("Participants");
+        String ekey = eveKey;
+
+        DatabaseReference eveRef =  participantsRef.child(ekey);
+
+        String pkey = eveRef.push().getKey();
+
+        eveRef.child(pkey).setValue(participant).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.d("Firebase","Inserted participant data");
+            }
+        });
+
+    };
+
+
+    //method
+
+
+    public ArrayList<ParticipantData> getAllParticipantList(String eveKey){
+        ArrayList<ParticipantData> participants = new ArrayList<>();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference participantRef = database.getReference("Participants").child(eveKey);
+
+        participantRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    ParticipantData participant = dataSnapshot.getValue(ParticipantData.class);
+                    participants.add(participant);
+                }
+                Log.d("Firebase","Retrived participants : "+participants.size());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Firebase","Error while retrieving");
+            }
+        });
+        return participants;
+    }
+
+
+    // Method to get event details by eventId
+//    public void getEventDetails(String eventId) {
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference eventsRef = database.getReference("EventsData");
+//        final EventData[] eventData = {new EventData()};
+//        Log.d("Firebase","Id : "+eventId);
+//        eventsRef.child(eventId).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                eventData[0] = snapshot.getValue(EventData.class);
+//                Log.d("Firebase","Single event data received");
+//                new EventRegisterActivity().showEventData(eventData[0]);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.d("Firebase","Error while retrieving");
+//            }
+//        });
+//    }
 }
-
-

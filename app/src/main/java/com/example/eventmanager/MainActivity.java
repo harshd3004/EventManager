@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
     ImageButton openMenuBtn;
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
             loadFragment(new HomeFragment());
             navigationView.setCheckedItem(R.id.nav_home);
         }
+
+
     }
 
     private void openSidebar() {
